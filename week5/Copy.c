@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 100
+
+void blockReadWrite(FILE *fin, FILE *fout){
+  int num;
+  char buff[MAX+1];
+
+  while (!feof(fin)) {
+    num = fread(buff,sizeof(char),MAX,fin);
+    buff[num * sizeof(char) ] = '\0';
+    printf("%s",buff);
+    fwrite(buff,sizeof(char), num, fout);
+  }
+}
+
+int main()
+{
+  FILE *fp1, *fp2;
+  
+
+  fp1 = fopen("lab1.txt","r");
+  if (fp1 == NULL) {
+    printf("Cannot open file!\n");
+    return 1;
+  }
+
+  fp2 = fopen("lab1c.txt","w");
+  if (fp2 == NULL) {
+    printf("Cannot open file!\n");
+    return 1;
+  }
+
+  blockReadWrite(fp1,fp2);
+  fclose(fp1);
+  fclose(fp2);
+  return 0;
+}
