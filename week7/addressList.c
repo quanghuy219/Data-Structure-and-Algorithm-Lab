@@ -56,6 +56,17 @@ address readNode(){
 }
 
 
+
+
+void displayNode(node_addr *p){
+  printf("Name: %s\n",p -> addr.name);
+  printf("Tel: %s\n",p -> addr.tel);
+}
+
+
+
+
+
 void traversingList(){
   node_addr *p;
   for (p = root; p != NULL; p=p->next) {
@@ -64,10 +75,6 @@ void traversingList(){
 }
 
 
-void displayNode(node_addr *p){
-  printf("Name: %s\n",p -> addr.name);
-  printf("Tel: %s\n",p -> addr.tel);
-}
 
 
 

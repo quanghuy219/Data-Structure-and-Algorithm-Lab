@@ -51,7 +51,7 @@ PHONE *getInput(int start, int end){
     end = numPhone;
   }
 
-  fseek(f, (start-1) * sizeof(PHONE),SEEK_SET);
+  fseek(f, (start-1) * sizeof(PHONE), SEEK_SET);
 
   count = end - start + 1;
   phone = (PHONE *)malloc(count * sizeof(PHONE));
@@ -59,7 +59,7 @@ PHONE *getInput(int start, int end){
  
   fread(phone,sizeof(PHONE),count,f);
   fclose(f);
-  free(phone);
+ 
   return phone;
 }
 
@@ -157,7 +157,7 @@ void menu2(){
     }
    
     for (i = 0; i < num; i++) {
-       printf("%-5d%-30s%-10s%-10s%d\n",i+1,allPhone[i].model,allPhone[i].memory,allPhone[i].screenSize,allPhone[i].price);
+       printf("%-5d%-30s%-10s%-10s%d\n",i+1,phone[i].model,phone[i].memory,phone[i].screenSize,phone[i].price);
     }
     break;
   }
