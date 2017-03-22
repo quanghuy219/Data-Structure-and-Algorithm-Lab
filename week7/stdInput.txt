@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+typedef struct {
+  char name[20];
+  char tell[11];
+  char email[25];
+} address;
+
+
+struct list_el {
+  address addr;
+  struct list_el *next;
+};
+
+
+typedef struct list_el node_addr;
+
+node_addr *root,*cur,*next;
+
+
+node_addr* makeNewNode(address addr){
+  node_addr* new = (node_addr*)malloc(sizeof(node_addr));
+  
+  new -> addr = addr;
+  new -> next = NULL;
+  return new;
+}
