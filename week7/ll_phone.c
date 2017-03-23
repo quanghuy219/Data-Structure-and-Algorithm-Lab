@@ -105,7 +105,7 @@ void menu1(){
    insertAfterCur(ph);
    buff[0] = '\0';
   }
-  traversingList();
+  printf("Build list succesfullly\n\n");
   fclose(fin);
 }
 
@@ -126,7 +126,7 @@ void menu2(){
   while (fread(&ph,sizeof(PHONE),1,fin) == 1) {
     insertAfterCur(ph);
   }
-  traversingList();
+   printf("Build list succesfullly\n\n");
   fclose(fin);
 }
 
