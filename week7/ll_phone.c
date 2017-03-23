@@ -122,8 +122,8 @@ void menu2(){
   fread(&ph,sizeof(PHONE),1,fin);
   root = makeNewNode(ph);
   cur = root;
-  while(!feof(fin)){
-    fread(&ph,sizeof(PHONE),1,fin);
+ 
+  while (fread(&ph,sizeof(PHONE),1,fin) == 1) {
     insertAfterCur(ph);
   }
   traversingList();
