@@ -24,6 +24,7 @@ int empty(stackType *stack) {
   return stack->top == NULL;
 }
 
+
 Node *makeNode(Eltype val) {
   Node *p;
   p = (Node *)malloc(sizeof(Node));
@@ -40,17 +41,30 @@ void push(stackType *stack, Eltype val) {
   stack->top = p;
 }
 
+
 Eltype pop(stackType *stack) {
   Node *p;
   Eltype val;
   if (empty(stack))
   {
-    printf("Stack overflow\n");
-    exit(0);
+    // printf("Stack overflow\n");
+    return 0;
   }
   p = stack->top;
-  stack->top = stack->top->prev;
   val = stack->top->data;
+  stack->top = stack->top->prev;
   free(p);
   return val;
+}
+
+
+void freeStack(stackType *stack){
+  Node *p;
+
+  while ( stack->top != NULL) {
+    p = stack->top->prev;
+    free(stack->top);
+    stack->top = p;
+    p = stack->top->prev;
+  }
 }
