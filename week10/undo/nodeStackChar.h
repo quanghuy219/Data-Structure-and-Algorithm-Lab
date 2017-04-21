@@ -51,7 +51,7 @@ Eltype_ch pop_ch(stackType_ch *stack) {
   if (empty_ch(stack))
   {
     // printf("Stack overflow\n");
-    return;
+    exit(0);
   }
   p = stack->top;
   val = stack->top->data;

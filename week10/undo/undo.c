@@ -6,9 +6,9 @@
 
 
 
-void displayTop(stackType s1){
-  printf("Top = %d\n",s1.top -> data);
-}
+// void displayTop(stackType s1){
+//   printf("Top = %d\n",s1.top -> data);
+// }
 
 void displayStack(stackType s1){
   Node *p = s1.top;
@@ -70,7 +70,10 @@ int main() {
         break;
 
       case 2:
-        displayTop(s1);
+        if (empty(&s1)) {
+          printf("Stack underflow\n");
+        }
+        else printf("\nTop = %d",Top(&s1));
         break;
 
       case 3:

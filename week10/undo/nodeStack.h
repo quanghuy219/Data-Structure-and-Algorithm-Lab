@@ -68,3 +68,11 @@ void freeStack(stackType *stack){
     p = stack->top->prev;
   }
 }
+
+
+Eltype Top(stackType *stack){
+  if (empty(stack)) {
+    exit(0);
+  }
+  return stack -> top -> data;
+}
