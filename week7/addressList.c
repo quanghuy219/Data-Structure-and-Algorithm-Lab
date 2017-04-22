@@ -107,7 +107,12 @@ void deleteFirstElement(){
 
 
 void deleteCurrentElement(){
-  node_addr* p = root;
+  node_addr* p;
+  if (cur == root) {
+    deleteFirstElement;
+  }
+  else{
+    p = root;
   while (1) {
     if (p -> next == cur) {
       break;
@@ -115,13 +120,16 @@ void deleteCurrentElement(){
     p = p -> next;
   }
   p -> next = cur -> next;
+  free(cur);
   cur = p -> next;
+  }
 }
 
 
 
 address readNode(){
   address new;
+  while(getchar() != '\n');
   printf("Name: ");
   gets(new.name);
   printf("Phone number: ");
@@ -148,25 +156,98 @@ void traversingList(){
 }
 
 
-void moveCur(){
-  int n;
+void moveCur(int n){
   node_addr *p;
-  printf("Enter position: ");
-  scanf("%d",&n);
-  for (p = root; p!= NULL; p=p->next) {
-    if (p -> addr.tel == n) {
-      break;
-    }
+  int count;
+  count = 0;
+  for(p=root; p != NULL; p = p->next){
+    count += 1;
+  }
+  if (n > count || n < 0) {
+    printf("Element not exist!!!\n");
+  }
+  else if (n == 1) {
+    cur = root;
+  }
+  else {
+    p = root;
+  for (int i = 0; i < n-1; i++) {
+    p = p -> next;
   }
   cur = p;
+  }
   displayNode(cur);
+}
+
+
+
+void insertAtPosition(int n){
+  node_addr *p;
+  address new;
+  int count,i;
+  /*
+  while(getchar() != '\n');
+  printf("Input data for element\n");
+  printf("Name: ");
+  gets(new.name);
+  printf("Tel: ");
+  scanf("%d",&new.tel);*/
+  new = readNode();
+  
+  for(p=root; p != NULL; p = p->next){
+    count++;
+  }
+  if (n > count || n < 0) {
+    printf("Element not exist!!!\n");
+    return;
+  }
+
+  else if( n==1){
+    insertAtHead(new);
+  }
+  else {
+    i = 0;
+    for (p = root; p != NULL; p = p->next) {
+      i++;
+      if (i == n-1) {
+	cur = p;
+	break;
+      }
+    }
+    insertAfterCur(new);
+  }
+}
+
+
+void deleteAtPosition(int n){
+  if (n == 1) {
+    deleteFirstElement();
+  }
+  else{
+  moveCur(n);
+  deleteCurrentElement();
+  }
+}
+
+
+
+
+void listReverse(){
+  node_addr *prev;
+  cur = prev = NULL;
+  while (root != NULL) {
+    cur = root;
+    root = root -> next;
+    cur -> next = prev;
+    prev = cur;
+  }
 }
 
 
 
 int main()
 {
-  int choice;
+  int choice, n;
   address new;
   while (1)
     {
@@ -179,8 +260,11 @@ int main()
       printf(" 7. Delete first element\n");
       printf(" 8. Delete cur element\n");
       printf(" 9. Move cur to position\n");
-      printf(" 11. Show cur\n");
-      printf(" 10. Exit\n");
+      printf(" 10. Show cur\n");
+      printf(" 11. Insert at position\n");
+      printf(" 12. Delete at position\n");
+      printf(" 13. Reverse list\n");
+      printf(" 0. Exit\n");
       printf("Your choice: ");
       scanf("%d",&choice);
       switch (choice)
@@ -226,11 +310,27 @@ int main()
 	  deleteCurrentElement();
 	  break;
 	case 9:
-	  moveCur();
+	  printf("nth element: ");
+	  scanf("%d",&n);
+	  moveCur(n);
+	  break;
+	case 10:
+	  printf("Cur: %s %d\n", cur -> addr.name, cur -> addr.tel);
 	  break;
 	case 11:
-	  printf("Cur: %s %d\n", cur -> addr.name, cur -> addr.tel);
-	case 10: printf("Exit!!!\n"); return 0;
+	  printf("nth element: ");
+	  scanf("%d",&n);
+	  insertAtPosition(n);
+	  break;
+	case 12:
+	  printf("nth element: ");
+	  scanf("%d",&n);
+	  deleteAtPosition(n);
+	  break;
+	case 13:
+	  list_reverse();
+	  break;
+	case 0: printf("Exit!!!\n"); return 0;
 	default:
 	  printf("Invalid input! Your choice must be from 1 to 7\n\n");
 	  break;

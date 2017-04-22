@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+# define MAX_STRING_MODEL 30
+# define MAX_STRING_MEMORY 10
+# define MAX_STRING_SCREENSIZE 10
+# define MAX_PAGE 34
+
+
+typedef struct {
+  char model[MAX_STRING_MODEL];
+  char memory[MAX_STRING_MEMORY];
+  char screenSize[MAX_STRING_SCREENSIZE];
+  int price;
+} PHONE;
+
+
+typedef struct list_phone {
+  PHONE Phone;
+  struct list_phone *next;
+  struct list_phone *prev;
+} node_ph;
+
+node_ph *root,*cur,*tail;
+
+
+node_ph* makeNewNode(PHONE ph){
+  node_ph* new = (node_ph*)malloc(sizeof(node_ph));
+  new -> Phone = ph;
+  new -> next = NULL;
+  new -> prev = NULL;
+  return new;
+}
+
+
+
+
+void insertAfterCur(PHONE ph){
+  node_ph* new = makeNewNode(ph);
+  new -> next = cur -> next;
+  cur -> next = new;
+  new -> prev = cur;
+  new -> next -> prev = new;
+  cur = cur -> next;
+}
+
+
+void insertBeforeCur(PHONE ph){
+  node_ph* new = makeNewNode(ph);
+  new -> prev = cur -> prev;
+  new -> next = cur;
+  cur -> prev = new;
+  new -> prev -> next = new;
+  cur = cur -> prev;
+}
+
+
+
+
+void displayNode(node_ph *p){
+  printf("%-30s%-10s%-10s%d\n",p -> Phone.model,p -> Phone.memory,p -> Phone.screenSize,p -> Phone.price);
+}
+
+
+void buildList(){
+  FILE *fin = fopen("phoneDB.dat","rb");
+  if (fin == NULL) {
+    printf("Cannot open file phoneDB.dat\n");
+    return;
+  }
+
+  PHONE ph;
+  fread(&ph,sizeof(PHONE),1,fin);
+  root = makeNewNode(ph);
+  cur = root;
+ 
+  while (fread(&ph,sizeof(PHONE),1,fin) == 1) {
+    insertAfterCur(ph);
+  }
+  tail = cur;
+   printf("Build list succesfullly\n\n");
+  fclose(fin);
+}
+
+
+void traversingList(){
+  node_ph *p;
+  for (p = root; p != NULL; p=p->next) {
+    displayNode(p);
+  }
+}
+
+
+int main()
+{
+  int choice;
+  while (1)
+    {
+      printf(" 1. Build list from file dat\n");
+      printf(" 3. Print all database\n");
+      printf(" 4. Find model\n");
+      printf(" 5. Search by price\n");
+      printf(" 6. Export list to PhoneDB.dat\n");
+      printf(" 7. Exit\n");
+      printf("Your choice: ");
+      scanf("%d",&choice);
+      switch (choice)
+	{
+	case 1:
+	  buildList();
+	  break;
+	case 2:
+	  traversingList();
+	  break;
+	  /*
+	case 3:
+	 
+	  break;
+	case 4:
+	  menu4(); 
+	  break;
+	case 5:
+	  menu5();
+	  break;
+	case 6:
+	  menu6();
+	  break;*/
+	case 7: printf("Exit!!!\n"); return 0;
+	default:
+	  printf("Invalid input! Your choice must be from 1 to 7\n\n");
+	  break;
+	}
+    }
+}

@@ -1,0 +1,302 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+
+
+
+void convertToDAT(FILE* fp1, FILE* fp2){
+  char *buff;
+   buff = (char *)malloc(MAX * sizeof(char));
+   buff[MAX * sizeof(char)] = '\0';
+
+   while(fgets(buff,MAX,fp1) != NULL){
+     fwrite(buff,MAX,sizeof(char),fp2);
+  }
+}
+
+
+
+
+
+void readFromEnd(FILE *fin,int n){
+  int pos;
+  char buff[MAX];
+  int count;
+
+  count = 0;
+  fseek(fin,0,SEEK_END);
+  pos = ftell(fin);
+
+  while (pos) {
+    fseek(fin, --pos,SEEK_SET);
+    if (fgetc(fin) == '\n') {
+      if (count ++ == n) break;
+    }
+  }
+
+
+  while (fgets(buff,MAX,fin) != NULL) {
+    printf("%s",buff);
+  }
+  
+}
+
+
+
+
+
+void readData(FILE *fin){
+  int choice,choice2;
+  int element,count;
+  int size;
+  char buff[MAX];
+  
+  printf("1. Read all\n");
+  printf("2. Read some part\n");
+  scanf("%d",&choice);
+  switch (choice) {
+  case 1: {
+    fseek(fin,0,SEEK_SET);
+    while(!feof(fin)){
+      fread(buff,1,sizeof(char),fin);
+      printf("%s",buff);
+    }
+    break;
+  }
+
+  case 2:
+    {
+      printf("1. Read from beginning\n");
+      printf("2. Read from end\n");
+      scanf("%d",&choice2);
+      switch (choice2) {
+      case 1: {
+	printf("Enter number of lines to be read: ");
+	scanf("%d",&element);
+	count=0;
+	//fegts(buff,max,fin) != NULL
+	
+	while(fgets(buff,MAX,fin != NULL)){
+	  printf("%s\n",buff);
+	  count += 1;
+	  if (count == element) break; 
+	}
+	fseek(fin,0,SEEK_SET);
+	break;
+	
+	
+      }
+
+      case 2:
+	{
+	  printf("Enter number of element to be read: ");
+	  scanf("%d",&element);
+	  readFromEnd(fin,element);
+	  break;
+	}
+default:
+	break;
+      }
+    }
+default:
+    break;
+  }
+  
+}
+
+
+
+
+
+
+void printToScreen(FILE *fin){
+  char *buff;
+  int count = 0;
+  int i;
+
+  buff = (char *)malloc(MAX * sizeof(char));
+  printf("Page 1:\n");
+  while(!feof(fin)){
+    fread(buff,sizeof(char),MAX,fin);
+    buff[MAX * sizeof(char)] = '\0';
+    for (i = 0; i < strlen(buff); i++) {
+     
+       if (buff[i] == '\n') {
+	count += 1;
+	if (count % 20 == 0) {
+	  printf("Page %d:\n",count/20+1);
+	}
+      } 
+    }
+    printf("%s",buff);
+  }
+  printf("\n");
+}
+
+
+
+
+
+
+
+void searchPhone(FILE *fin){
+  char buff[MAX];
+  int i;
+  char model[MAX];
+  char search[MAX];
+  int count; //count spaces
+  int end, flag = 0; //flag if no result found
+  int ret;
+
+
+  while(getchar() != '\n');
+  printf("Model: ");
+  fgets(search,MAX,stdin);
+
+  if (search[strlen(search)-1] == '\n'){
+    search[strlen(search)-1] = '\0';
+  }
+
+  
+  for (i = 0; i < strlen(search); i++) {
+    search[i] = tolower(search[i]);
+  }
+  search[i+1] = '\0';
+
+  while (fgets(buff,MAX,fin) != NULL) {
+    
+    for (i = 0; i < strlen(buff); i++) {
+      if (isdigit(buff[i]) && buff[i+1] == 'G' && buff[i+2] == 'B') {
+	ret = i;
+	break;
+      }
+    }
+
+    for (i = ret; i >= 0 ; i--) {
+      if (isspace(buff[i])) {
+	end = i;
+	break;
+      }
+    }
+  
+    
+    for (i = 0; i < end; i++) {
+      model[i] = buff[i];
+    }
+
+     model[i] = '\0';
+
+    for (i = 0; i < strlen(model); i++) {
+      model[i] = tolower(model[i]);
+    }
+    
+    if (strcmp(model,search) == 0) {
+      printf("%s\n",buff);
+      flag = 1;
+    }
+  }
+
+  if (flag == 0) {
+    printf("No result found!!!\n");
+  }
+}
+
+
+int main()
+{
+  int choice;
+  FILE *fp1, *fp2;
+  do{
+  printf("Menu:\n");
+  printf("1. Convert phoneDB.txt to phoneDB.dat\n");
+  printf("2. Read data\n");
+  printf("3. Print to screen\n");
+  printf("4. Search phone model\n");
+  printf("5. Exit\n");
+  printf("Choose: ");
+  scanf("%d",&choice);
+
+
+  switch (choice) {
+  case 1:
+    {
+    fp1 = fopen("phoneDB.txt","r");
+    if (fp1 == NULL) {
+      printf("Cannot open file phoneDB.txt\n");
+      return 1;
+    }
+    
+    fp2 = fopen("phoneDB.dat","wb");
+    if (fp2 == NULL) {
+      printf("Cannot create file phoneDB.dat\n");
+      return 1;
+    }
+    
+    convertToDAT(fp1,fp2);
+    fclose(fp1);
+    fclose(fp2);
+    break;
+    }
+
+
+  case 2:
+    {
+      fp2 = fopen("phoneDB.dat","rb");
+      if (fp2 == NULL) {
+	printf("Cannot open file .dat\n");
+	return 1;
+      }
+
+      readData(fp2);
+      fclose(fp2);
+      
+    }
+
+
+
+
+  case 3:
+    {
+      fp2 = fopen("phoneDB.dat","rb");
+      if (fp2 == NULL) {
+      printf("Cannot create file phoneDB.dat\n");
+      return 1;
+      }
+      printToScreen(fp2);
+      fclose(fp2);
+      break;
+    }
+
+
+
+
+  case 4:
+    {
+      fp1 = fopen("phoneDB.txt","r");
+      if (fp1 == NULL) {
+	printf("Cannot open file phoneDB\n");
+	return 1;
+      }
+
+      searchPhone(fp1);
+      fclose(fp1);
+      break;
+    }
+
+
+
+
+
+  case 5: printf("Exit\n"); break;
+    
+default:
+    break;
+  }
+  }while(choice != 5);
+    
+  return 0;
+}

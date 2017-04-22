@@ -1,0 +1,146 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+# define MAX_STRING_MODEL 30
+# define MAX_STRING_MEMORY 10
+# define MAX_STRING_SCREENSIZE 10
+# define MAX_PAGE 34
+
+
+typedef struct {
+  char model[MAX_STRING_MODEL];
+  char memory[MAX_STRING_MEMORY];
+  char screenSize[MAX_STRING_SCREENSIZE];
+  int price;
+} PHONE;
+
+
+
+typedef struct list_phone {
+  PHONE Phone;
+  struct list_phone *next;
+} node_ph;
+
+
+
+node_ph *root,*cur;
+
+
+
+PHONE *allPhone;
+int numPhone;
+
+
+
+void correct(char *s)
+{
+  for (int i=0; i<strlen(s); i++)
+    if (s[i] == '_')
+      s[i] = ' ';
+}
+
+
+
+
+node_ph* makeNewNode(PHONE ph){
+  node_ph* new = (node_ph*)malloc(sizeof(node_ph));
+  new -> Phone = ph;
+  new -> next = NULL;
+  return new;
+}
+
+
+
+void insertAfterCur(PHONE ph){
+  node_ph* new = makeNewNode(ph);
+  new -> next = cur -> next;
+  cur -> next = new;
+  cur = cur -> next;
+}
+
+
+
+void traversingList(){
+  node_addr *p;
+  for (p = root; p != NULL; p=p->next) {
+    displayNode(p);
+  }
+}
+
+
+void displayNode(node_addr *p){
+  printf("%-5d%-30s%-10s%-10s%d\n",p -> Phone.model,p -> Phone.memory,p -> Phone.screenSize,p -> Phone.price);
+}
+
+
+
+
+void menu1(){
+  FILE *fin = fopen("phoneDB.txt","r");
+  if (fin == NULL) {
+    printf("Failed to read file phoneDB.txt");
+    return;
+  }
+
+  char buff[100];
+  buff[0] = '\0';
+  PHONE ph;
+  
+  fgets(buff,100,fin);
+  sscanf(buff,"%s %s %s %d",ph.model,ph.memory,ph.screenSize,&ph.price);
+  correct(ph.model);
+  root = makeNewNode(ph);
+  cur = root;
+  buff[0]='\0';
+  while(fgets(buff,100,fin) != NULL){
+   sscanf(buff,"%s %s %s %d",ph.model,ph.memory,ph.screenSize,&ph.price);
+   correct(ph.model);
+   insertAfterCur(ph);
+   buff[0] = '\0';
+  }
+  traversingList();
+  fclose(fin);
+}
+
+
+
+
+int main()
+{
+  int choice;
+  while (1)
+    {
+      printf(" 1. Build list from file text\n");
+      printf(" 2. Build list from file dat\n");
+      printf(" 3. Print all database\n");
+      printf(" 4. Find model\n");
+      printf(" 5. Search by price\n");
+      printf(" 6. Export list to PhoneDB.dat\n");
+      printf(" 7. Exit\n");
+      printf("Your choice: ");
+      scanf("%d",&choice);
+      switch (choice)
+	{
+	case 1:
+	  menu1(); 
+	  break;
+	case 2:
+	  //menu2(); 
+	  break;
+	case 3:
+	  //menu3(); 
+	  break;
+	case 4:
+	  //menu4(); l
+	  break;
+	case 5:
+	  //menu5();
+	case 6:
+	  //menu6();
+	case 7: printf("Exit!!!\n"); return 0;
+	default:
+	  printf("Invalid input! Your choice must be from 1 to 7\n\n");
+	  break;
+	}
+    }
+}

@@ -1,0 +1,141 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+
+# define MAX_STRING_MODEL 30
+# define MAX_STRING_MEMORY 10
+# define MAX_STRING_SCREENSIZE 10
+# define MAX_PAGE 34
+
+
+
+typedef struct {
+  char model[MAX_STRING_MODEL];
+  char memory[MAX_STRING_MEMORY];
+  char screenSize[MAX_STRING_SCREENSIZE];
+  int price;
+} PHONE;
+
+PHONE *phone;
+
+
+void correct(char *s)
+{
+  for (int i=0; i<strlen(s); i++)
+    if (s[i] == '_')
+      s[i] = ' ';
+}
+
+
+
+
+PHONE *getInput(int *n){
+  FILE *f = fopen("phoneDB.dat","rb");
+  int count;
+  PHONE *phone;
+  if (f == NULL) {
+    printf("Failed to open phoneDB.dat!!!\n");
+    return NULL;
+  }
+  fseek(f,0,SEEK_END);
+  count = ftell(f) / sizeof(PHONE);
+  *n = count;
+  fseek(f,0,SEEK_SET);
+  phone = (PHONE *)malloc(count * sizeof(PHONE));
+  fread(phone,sizeof(PHONE),count,f);
+  fclose(f);
+  return phone;
+}
+
+
+
+
+void menu1()
+{
+  FILE *fi = fopen("phoneDB.txt","r");
+  if (fi == NULL)
+    {
+      printf("Error opening PhoneDB.txt\n");
+      return;
+    }
+  FILE *fo = fopen("phoneDB.dat","wb");
+  PHONE phone;
+  while (ftell(fi) != SEEK_END)
+    {
+      phone.model[0] = '\0';
+      fscanf(fi,"%s%s%s%d",phone.model,phone.memory,phone.screenSize,&phone.price);
+      if (strlen(phone.model) == 0) break;
+      correct(phone.model);
+      correct(phone.memory);
+      correct(phone.screenSize);
+      fwrite(&phone,sizeof(PHONE),1,fo);
+    }
+  fclose(fi);
+  fclose(fo);
+  printf("Import data from text successfully!\n\n");
+}
+
+
+
+void menu3(){
+  int n;
+  phone = getInput(&n);
+  if(phone == NULL){
+    printf("Read data failed!!!\n");
+    return;
+  }
+
+  for (int i = 0; i < n; i++) {
+    if(i % 20 == 0){
+      printf("\nPage %d:\n",i/20+1);
+    }
+    printf("%-5d%-30s%-10s%-10s%d\n",i+1,phone[i].model,phone[i].memory,phone[i].screenSize,phone[i].price);
+  }
+  printf("\n\n");
+  free(phone);
+}
+
+
+void menu4(){
+  
+}
+
+
+
+int main()
+{
+  int choice;
+  while (1)
+    {
+      printf(" 1. Import DB from text\n");
+      printf(" 2. Import from DB\n");
+      printf(" 3. Print all database\n");
+      printf(" 4. Find model\n");
+      printf(" 5. Exit\n");
+      printf("Your choice: ");
+      scanf("%d",&choice);
+      switch (choice)
+	{
+	case 1:
+	  menu1();
+	  break;
+	case 2:
+	  //menu2();
+	  break;
+	case 3:
+	  menu3();
+	  break;
+	case 4:
+	  //menu4();
+	  break;
+	case 5:
+	  printf("Exit!\n");
+	  return 0;
+	default:
+	  printf("Invalid input! Your choice must be from 1 to 5\n\n");
+	  break;
+	}
+    }
+}

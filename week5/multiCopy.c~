@@ -1,0 +1,34 @@
+#include <stdio.h>
+
+
+
+
+void copyCharacter(FILE* fin, FILE* fout){
+  char c;
+  while (  (c=fgetc(fin)) != EOF) {
+    fputc(c,fout);
+  }
+}
+
+
+
+
+int main()
+{
+  FILE* fp1;
+  int choice;
+
+  printf("1. Copy character\n");
+  printf("2. Copy lines\n");
+  printf("3. Copy block\n");
+  scanf("%d",&choice);
+  switch (choice) {
+  case 1: {
+    
+    break;
+  }
+default:
+    break;
+  }
+  return 0;
+}

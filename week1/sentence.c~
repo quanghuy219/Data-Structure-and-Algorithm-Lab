@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(){
+  char article[5][10] = {"the", "a", "one", "some", "any"};
+  char noun[5][10] = {"boy", "girl", "dog", "town", "car"};
+  char verb[5][10] = {"drove", "jumped", "ran", "walked", "skipped"};
+  char preposition[5][10] = {"to", "from", "over", "under", "on"};
+  char sentence[10][50];
+  int i, num_article, num_subject, num_verb, num_preposition, num_object;
+
+
+  for (i = 0; i < 5; i++) {
+    num_article = rand() % 5;
+    strcpy(sentence[i],article[num_article]);
+    strcat(sentence[i],' ');
+    toupper(sentence[i][0]);
+    num_subject = rand() % 5;
+    strcat(sentence[i],noun[])
+    num_verb = rand() % 5;
+    num_preposition = rand() % 5;
+    num_object = rand() % 5;
+    
+    
+  }
+  return 0;
+}

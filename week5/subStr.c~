@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 100
+
+
+char* subStr(char *s1, int offset,int number){
+  
+}
+
+
+int main()
+{
+  char *str;
+  printf("Enter a string: ");
+  scanf("%100s",str);
+
+  printf("Strlen: %d\n",strlen(str));
+
+  return 0;
+}
+

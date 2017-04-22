@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(int argc, char *argv[])
+{
+  float Ex;
+  int n = 1;
+  float x = argv[1];
+  float temp = 0;
+  while (fabs(Ex - temp) < 0.0001) {
+    temp = Ex;
+    Ex = x/n;
+    n = n*(n+1);
+    x *= x;
+  }
+  printf("E(x) = %f\n",Ex);
+  return 0;
+}

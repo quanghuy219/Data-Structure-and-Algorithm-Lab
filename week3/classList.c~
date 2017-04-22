@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+typedef struct {
+  int STT;
+  int mssv;
+  char name[50];
+  int phoneNumber;
+  int grade;
+} student;
+
+
+void getInfomation(student a[], FILE *fin, int *num_std){ //get stt and student ID
+  char filebuff[MAX];
+  int line = 0;
+  
+  while ( fgets(filebuff,MAX,fin) != NULL  ) {
+    sscanf(filebuff,"%d %d", &a[line].STT,&a[line].mssv);
+    line++;
+  }
+  *num_std = line;
+}
+
+
+void getName(student a[], FILE *fin){ // get name and phone number
+  int line = 0, n, m = 0;
+  char temp[MAX];
+  char filebuff[MAX];
+  int start,end;
+
+  while ( fgets(filebuff,MAX,fin) != NULL) {    
+    for (n = 0; n < strlen(filebuff); n++) {
+      if ( isalpha(filebuff[n]) ) {
+	start = n;
+	break;
+      }
+    }
+    for (n = strlen(filebuff); n > start; n--) {
+      if ( isalpha(filebuff[n]) ) {
+	end = n;
+	break;
+      }
+    }
+
+    for (n = start; n <= end; n++) {
+      temp[m] = filebuff[n];
+      m++;
+    }
+
+    strcpy(a[line].name,temp);
+    line++;
+  }
+}
+
+void printInfo(student a[], int *num_std){
+  int i;
+  printf("%-7s%-10s%-30s%-15s\n","STT","MSSV","Name","Phone Number");
+  for (i = 0; i < *num_std; i++) {
+    printf("%-7d%-10d%-30s%-15d\n",a[i].STT,a[i].mssv,a[i].name,a[i].phoneNumber);
+  }
+}
+
+
+int main()
+{
+  FILE *fp1;
+  student std[20];
+  int num_std;
+
+  fp1 = fopen("studentList.txt","r");
+  if (fp1 == NULL) {
+    printf("Cannot open student list!!!\n");
+    return 1;
+  }
+
+  getInfomation(std,fp1,&num_std);
+  getName(std,fp1);
+  printInfo(std,&num_std);
+
+  fclose(fp1);
+
+  
+  return 0;
+}

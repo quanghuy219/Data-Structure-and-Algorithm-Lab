@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+typedef struct {
+  int STT;
+  int mssv;
+  char *name;
+  int phoneNumber;
+  float mark;
+} student;
+
+student *std;
+
+void getInformation(FILE *fin, int num_std){
+  char filebuff[MAX];
+  char tmp[MAX];
+  int 
+}
+
+int main()
+{
+  FILE *fp1, *fp2;
+  int num_std, line;
+  char filebuff[MAX];
+
+  fp1 = fopen("studentlist.txt",'r');
+  if (fp1 == NULL) {
+    printf("Cannot open student list!\n");
+    return 1;
+  }
+
+  
+  line = 0;
+  while (fegts(filebuff,MAX,fp1) != NULL) {
+    line+1;
+  }
+
+  num_std = line;
+
+  fseek(fp1,0,SEEK_SET);
+
+  std = (student *)malloc(num_std * sizeof(student) );
+ 
+  return 0;
+}
