@@ -184,7 +184,7 @@ void printSeat(){
 
 
 
-int main(int argc, char const *argv[]) {
+int main() {
   printf("Booking for flight: ");
   scanf("%s",flight_name);
   ID = 1;
