@@ -57,6 +57,17 @@ void postorder(Node_tr* p){
   }
 }
 
+void inorder(Node_tr* p){
+  if (p != NULL) {
+    postorder(p -> left);
+    printf("%c",p->val);
+    postorder(p -> right);
+
+  }
+}
+
+
+
 
 Node_tr* find(Node_tr* r, int v){
   if (r == NULL) return NULL;
@@ -151,10 +162,13 @@ int main() {
   root = create(post);
   i = strlen(post)-1;
   root1 = create(post);
-  //preorder(root);
+  preorder(root);
   printf("\n");
-  //postorder(root);
+  inorder(root);
   printf("\n");
+  postorder(root);
+  printf("\n");
+
   char result;
   printf("Result: %c\n",eval(root1));
   return 0;
