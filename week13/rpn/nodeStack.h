@@ -38,11 +38,8 @@ Node* makeNode(Eltype* val) {
 }
 
 Eltype* Top(stackType *stack){
-
   if (!empty(stack))
   return stack -> top -> data;
-
-  else return NULL;
 }
 
 void push(stackType *stack, Eltype* val) {

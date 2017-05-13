@@ -15,35 +15,86 @@ Node* makeNewNode(int i){
   return p;
 }
 
-Node* create(int x) {
+Node* create() {
   Node* p;
-  int tmp = x;
-  //tmp = x;
-  //printf("Enter data: ");
-  //scanf("%d",&x);
+  int x;
+  printf("Enter data: ");
+  scanf("%d",&x);
 
   if (x == -1) {
     return NULL;
   }
 
-  if(tmp != -1){
+  //if(tmp != -1){
   p = makeNewNode(x);
   printf("Enter left child of %d\n",x);
-  scanf("%d",&x);
-  p -> left = create(x);
+  //scanf("%d",&x);
+  p -> left = create();
 
   printf("Enter right sibling of %d\n",x);
-  scanf("%d",&x);
-  p -> right = create(x);
-  }
+  //scanf("%d",&x);
+  p -> right = create();
+
 
   return p;
 }
 
 
+void insertNode(int x, Node **root){
+  if (*root == NULL) {
+    (*root) = makeNewNode(x);
+  }
+
+  else if( x < (*root)->key) insertNode(x,&(*root) -> left);
+
+  else if( x > (*root) -> key) insertNode(x,&(*root)->right);
+}
+
+
+Node* search(int x, Node* root){
+  if (root == NULL) {
+    return NULL;
+  }
+
+  else if (root -> key == x) {
+    return root;
+  }
+  else if(root -> key > x) {
+    return search(x,root->left);
+  }
+  else return search(x,root->right);
+}
+
+
+int deleteMin(Node **root){
+  int k;
+  if ((*root) -> left == NULL) {
+    k = (*root) -> key;
+    *root = (*root) -> right;
+    return k;
+  }
+  else return deleteMin(&(*root) -> left);
+}
+
+
+
+void deleteNode(int k, Node** root) {
+  if (*root != NULL) {
+    if (k < (*root)->key) deleteNode(k,&(*root)->left);
+
+    else if ((*root)->left == NULL && (*root)->right == NULL) *root = NULL;
+
+    else if ((*root)->left == NULL) *root = (*root)->right;
+    else if ((*root)->right == NULL) *root = (*root)->left;
+    else (*root) -> key = deleteMin(&(*root)->right);
+
+  }
+}
+
+
 void preorder(Node* p){
   if (p != NULL) {
-    printf("%d",p->key);
+    printf("%d    ",p->key);
     preorder(p -> left);
     preorder( p-> right);
   }
@@ -53,7 +104,7 @@ void postorder(Node* p){
   if (p != NULL) {
     postorder(p -> left);
     postorder(p -> right);
-    printf("%d",p->key);
+    printf("%d    ",p->key);
   }
 }
 
@@ -116,10 +167,23 @@ void addRightMost(Node *r){
 
 
 int main() {
-  Node* root;
-  root = create(0);
+  Node* root,*p;
+  root = create();
   postorder(root);
   printf("\n");
+  p = search(7,root);
+  if (p == NULL) {
+    printf("Not found!!!\n");
+  }
+  else printf("Found\n");
+
+  //insertNode(1234,&root);
+  deleteNode(99,&root);
+  postorder(root);
+  printf("\n");
+
+
+
 
   // printf("\nPreorder Transersal\n");
   // preorder(root);
