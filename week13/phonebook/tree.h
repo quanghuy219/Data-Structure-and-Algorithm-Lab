@@ -16,28 +16,6 @@ Node_tr* makeNewNode(char i[]){
   return p;
 }
 
-//
-// Node_tr* create(stackType *stack) {
-//   Node_tr* p;
-//   int x;
-//
-//   if( Top(stack) == NULL) return NULL;
-//
-//   else {
-//     if ( sscanf(Top(stack),"%d",&x) == 1) {
-//       p = makeNewNode(pop(stack));
-//   }
-//
-//     else if(checkOperator(Top(stack)[0])) {
-//       p = makeNewNode(pop(stack));
-//       p -> right = create(stack);
-//       p -> left = create(stack);
-//   }
-//
-//   return p;
-//   }
-// }
-
 
 
 void preorder(Node_tr* p){
@@ -62,6 +40,7 @@ void inorder(Node_tr* p){
     inorder(p -> left);
     printf("%s\n",p->val);
     inorder(p -> right);
+
   }
 }
 
