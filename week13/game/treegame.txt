@@ -1,0 +1,31 @@
+FedEx
+Nadal
+Nole
+Murray
+Nishikori
+Wawrinka
+Raonic
+Cilic
+Thiem
+Dimitrov
+Tsonga
+Berdych
+Isner
+Ferrer
+Golfin
+Monfils
+Winner of FedEx and Nadal is Nadal
+Winner of Nole and Murray is Murray
+Winner of Nadal and Murray is Murray
+Winner of Nishikori and Wawrinka is Wawrinka
+Winner of Raonic and Cilic is Cilic
+Winner of Wawrinka and Cilic is Cilic
+Winner of Murray and Cilic is Cilic
+Winner of Thiem and Dimitrov is Dimitrov
+Winner of Tsonga and Berdych is Berdych
+Winner of Dimitrov and Berdych is Berdych
+Winner of Isner and Ferrer is Ferrer
+Winner of Golfin and Monfils is Monfils
+Winner of Ferrer and Monfils is Monfils
+Winner of Berdych and Monfils is Monfils
+Winner of Cilic and Monfils is Monfils
