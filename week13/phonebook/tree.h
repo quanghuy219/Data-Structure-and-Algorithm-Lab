@@ -1,16 +1,24 @@
 
 #define MAX 100
 
+typedef struct {
+  char name[MAX];
+  char email[MAX];
+  char phone[MAX];
+} Contact;
+
 typedef struct node_tr{
-  char val[MAX];
+  Contact val;
   struct node_tr* left; //leftChild
   struct node_tr* right; //rightSibling
 } Node_tr;
 
 
-Node_tr* makeNewNode(char i[]){
+Node_tr* makeNewNode(Contact person){
   Node_tr* p = (Node_tr*)malloc(sizeof(Node_tr));
-  strcpy(p->val,i);
+  strcpy(p-> val.name, person.name);
+  strcpy(p -> val.email, person.email);
+  strcpy(p -> val.phone, person.phone);
   p -> left = NULL;
   p -> right = NULL;
   return p;
@@ -20,7 +28,7 @@ Node_tr* makeNewNode(char i[]){
 
 void preorder(Node_tr* p){
   if (p != NULL) {
-    printf("%s   ",p->val);
+    printf("%s   ",p->val.email);
     preorder(p -> left);
     preorder( p-> right);
   }
@@ -31,16 +39,15 @@ void postorder(Node_tr* p){
     //printf("left of %s")
     postorder(p -> left);
     postorder(p -> right);
-    printf("%s\n",p->val);
+    printf("%s\n",p->val.email);
   }
 }
 
 void inorder(Node_tr* p){
   if (p != NULL) {
     inorder(p -> left);
-    printf("%s\n",p->val);
+    printf("%s\n",p->val.email);
     inorder(p -> right);
-
   }
 }
 
