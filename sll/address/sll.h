@@ -21,7 +21,6 @@ void Initialize(s_list *list){
 
 
 
-
 Node* makeNewNode(elementType addr){
   Node* new = (Node*)malloc(sizeof(Node));
   new -> addr = addr;
