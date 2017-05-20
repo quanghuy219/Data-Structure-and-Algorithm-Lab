@@ -1,7 +1,7 @@
 
 
 typedef struct list_el {
-  address addr;
+  elementType addr;
   struct list_el *next;
 } node_addr;
 
@@ -22,14 +22,13 @@ void Initialize(s_list *list){
 
 
 
-node_addr* makeNewNode(address addr){
+node_addr* makeNewNode(elementType addr){
   node_addr* new = (node_addr*)malloc(sizeof(node_addr));
   new -> addr = addr;
   new -> next = NULL;
   return new;
 }
 
-// void insertAfterCur(address adr, s_list *list);
 
 void displayNode(node_addr *p);
 
@@ -57,7 +56,7 @@ void moveCur(int n, s_list *list){
 }
 
 
-void insertAtHead(address adr, s_list *list){
+void insertAtHead(elementType adr, s_list *list){
   node_addr* new = makeNewNode(adr);
   new -> next = list -> root;
   list -> root = new;
@@ -66,7 +65,7 @@ void insertAtHead(address adr, s_list *list){
 
 
 
-void insertAtLast(address adr, s_list *list){
+void insertAtLast(elementType adr, s_list *list){
   node_addr* new = makeNewNode(adr);
   node_addr* p;
   int count = 0;
@@ -79,7 +78,7 @@ void insertAtLast(address adr, s_list *list){
 }
 
 
-void insertAfterCur(address adr, s_list *list){
+void insertAfterCur(elementType adr, s_list *list){
   node_addr* new_item = makeNewNode(adr);
   new_item -> next = list -> cur -> next;
   list -> cur -> next = new_item;
@@ -88,7 +87,7 @@ void insertAfterCur(address adr, s_list *list){
 
 
 
-void insertBeforeCur(address adr, s_list *list){
+void insertBeforeCur(elementType adr, s_list *list){
   node_addr* new_item = makeNewNode(adr);
   node_addr* p = list -> root;
   while (1) {
@@ -111,7 +110,7 @@ void insertBeforeCur(address adr, s_list *list){
 
 
 
-void insertAtPosition(int n, s_list *list, address new){
+void insertAtPosition(int n, s_list *list, elementType new){
   node_addr *p;
 
   int count,i;
@@ -120,10 +119,6 @@ void insertAtPosition(int n, s_list *list, address new){
     count++;
   }
 
-  // if (n > count || n < 0) {
-  //   printf("Element not exist!!!\n");
-  //   return;
-  // }
 
   if( n <=1){
     insertAtHead(new,list);
