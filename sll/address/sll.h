@@ -3,38 +3,38 @@
 typedef struct list_el {
   elementType addr;
   struct list_el *next;
-} node_addr;
+} Node;
 
 typedef struct {
-  node_addr *root;
-  node_addr *cur;
+  Node *root;
+  Node *cur;
 } s_list;
 
 
 
 void Initialize(s_list *list){
-  list -> root = (node_addr*)malloc(sizeof(node_addr));
+  list -> root = (Node*)malloc(sizeof(Node));
   list -> root = NULL;
-  list -> cur = (node_addr*)malloc(sizeof(node_addr));
+  list -> cur = (Node*)malloc(sizeof(Node));
   list -> cur = NULL;
 }
 
 
 
 
-node_addr* makeNewNode(elementType addr){
-  node_addr* new = (node_addr*)malloc(sizeof(node_addr));
+Node* makeNewNode(elementType addr){
+  Node* new = (Node*)malloc(sizeof(Node));
   new -> addr = addr;
   new -> next = NULL;
   return new;
 }
 
 
-void displayNode(node_addr *p);
+void displayNode(Node *p);
 
 
 void moveCur(int n, s_list *list){
-  node_addr *p;
+  Node *p;
   int count;
   count = 0;
   for(p = list -> root; p != NULL; p = p->next){
@@ -57,7 +57,7 @@ void moveCur(int n, s_list *list){
 
 
 void insertAtHead(elementType adr, s_list *list){
-  node_addr* new = makeNewNode(adr);
+  Node* new = makeNewNode(adr);
   new -> next = list -> root;
   list -> root = new;
   list -> cur = list -> root;
@@ -66,8 +66,8 @@ void insertAtHead(elementType adr, s_list *list){
 
 
 void insertAtLast(elementType adr, s_list *list){
-  node_addr* new = makeNewNode(adr);
-  node_addr* p;
+  Node* new = makeNewNode(adr);
+  Node* p;
   int count = 0;
   //list -> cur = list -> root;
   for (p = list -> root; p != NULL; p = p->next) {
@@ -79,7 +79,7 @@ void insertAtLast(elementType adr, s_list *list){
 
 
 void insertAfterCur(elementType adr, s_list *list){
-  node_addr* new_item = makeNewNode(adr);
+  Node* new_item = makeNewNode(adr);
   new_item -> next = list -> cur -> next;
   list -> cur -> next = new_item;
   list -> cur = list -> cur -> next;
@@ -88,8 +88,8 @@ void insertAfterCur(elementType adr, s_list *list){
 
 
 void insertBeforeCur(elementType adr, s_list *list){
-  node_addr* new_item = makeNewNode(adr);
-  node_addr* p = list -> root;
+  Node* new_item = makeNewNode(adr);
+  Node* p = list -> root;
   while (1) {
     if ( p -> next == list -> cur) {
       break;
@@ -111,7 +111,7 @@ void insertBeforeCur(elementType adr, s_list *list){
 
 
 void insertAtPosition(int n, s_list *list, elementType new){
-  node_addr *p;
+  Node *p;
 
   int count,i;
 
@@ -145,7 +145,7 @@ void insertAtPosition(int n, s_list *list, elementType new){
 
 
 void deleteFirstElement(s_list *list){
-  node_addr* del = (node_addr *)malloc(sizeof(node_addr));
+  Node* del = (Node *)malloc(sizeof(Node));
   del = list -> root;
   if( list -> cur == list -> root ) list -> cur = list -> root -> next;
   list -> root = del -> next;
@@ -156,7 +156,7 @@ void deleteFirstElement(s_list *list){
 
 
 void deleteCurrentElement(s_list *list){
-  node_addr* p;
+  Node* p;
   if (list -> cur == list -> root) {
     deleteFirstElement(list);
   }
@@ -176,7 +176,7 @@ void deleteCurrentElement(s_list *list){
 
 
 void deleteLast(s_list *list){
-  node_addr *p;
+  Node *p;
   for ( p = list -> root; p -> next != NULL; p = p -> next){
     list -> cur = p;
   }
@@ -204,7 +204,7 @@ void deleteAtPosition(int n, s_list *list){
 
 
 void list_reverse(s_list *list){
-  node_addr *prev,*next;
+  Node *prev,*next;
   next = prev = NULL;
   if(list -> root != NULL) {
   while (list -> root -> next != NULL) {

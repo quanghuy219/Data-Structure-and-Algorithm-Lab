@@ -48,7 +48,7 @@ void menu1(s_list *list){
 
 
 void countTotal(s_list *list){
-  node_addr *p;
+  Node *p;
   total = 0;
   for( p = list -> root; p != NULL; p = p->next){
     if(p != NULL) total ++;
@@ -74,7 +74,7 @@ elementType readNode(){
 
 
 
-void displayNode(node_addr *p){
+void displayNode(Node *p){
   if(p != NULL)
   printf("%-20s%-20s%s\n",p -> addr.name,p -> addr.email,p->addr.tel);
 }
@@ -84,7 +84,7 @@ void displayNode(node_addr *p){
 
 
 void traversingList(s_list *list){
-  node_addr *p;
+  Node *p;
   int i=0;
   for (p = list -> root; p != NULL; p=p->next) {
     printf("%-5d",i+1);
@@ -93,8 +93,8 @@ void traversingList(s_list *list){
   }
 }
 
-void traverse(node_addr* root){
-  node_addr* p;
+void traverse(Node* root){
+  Node* p;
   for( p = root; p != NULL; p = p->next){
     displayNode(p);
   }
