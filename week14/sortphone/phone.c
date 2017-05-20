@@ -5,6 +5,8 @@
 
 #define COUNT 10
 
+Contact *a;
+
 
 void readFile(FILE *fin, Contact *person,int num){
   for(int i=0; i < num; i++){
@@ -13,35 +15,45 @@ void readFile(FILE *fin, Contact *person,int num){
 }
 
 
-void sort(Contact *person,int num){
-  Contact *sort_person = (Contact*)malloc(sizeof(Contact)*num);
-  Contact temp;
-  for (int i = 0; i < num; i++) {
-    for(int j = i+1; j < num; j++){
-      if ( strcmp(person[i].email,person[j].email) > 0) {
-        temp = person[i];
-        person[i] = person[j];
-        person[j] = temp;
-      }
-    }
-  }
+void swap(Contact *a, Contact *b){
+  Contact tmp;
+  tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+
+int partition(int L, int R, int indexPivot){
+	Contact pivot = a[indexPivot];
+	swap(&a[indexPivot], &a[R]);
+	int storeIndex = L;
+	for(int i=L; i<=R-1; i++){
+		if(strcmp(a[i].email, pivot.email) < 0){
+			swap(&a[storeIndex], &a[i]);
+			storeIndex++;
+		}
+	}
+	swap(&a[storeIndex], &a[R]);
+
+	return storeIndex; //position of pivot
+}
+
+void quickSort(int L, int R){
+	if(L<R){
+		int index = (L+R)/2;
+		index = partition(L, R, index);
+		if(L<index){
+			quickSort(L, index-1);
+		}
+		if(R>index){
+			quickSort(index+1, R);
+		}
+	}
 }
 
 
 
-// Node_tr *buildBST(Contact *person, int l, int r){
-//
-//   if (l > r) {
-//     return NULL;
-//   }
-//
-//   int mid = (l+r)/2;
-//   Node_tr* root = makeNewNode(person[mid]);
-//   root -> left = buildBST(person,l,mid-1);
-//   root -> right = buildBST(person,mid+1,r);
-//
-//   return root;
-// }
+
 
 Node_tr *buildBST(Contact *person, int num){
   Node_tr *r;
@@ -79,7 +91,7 @@ void writeFile(FILE *fin, Node_tr *root){
 
 void print(Contact *person, int num_contact) {
   for(int i = 0; i < num_contact; i++){
-    printf("%s    %s    %s\n", person[i].name, person[i].email, person[i].phone);
+    printf("%-10s%-20s%-15s\n", person[i].name, person[i].email, person[i].phone);
   }
 }
 
@@ -95,14 +107,20 @@ int main() {
   fseek(fp1,0,SEEK_END);
   int num_contact = ftell(fp1) / sizeof(Contact);
   Contact *person = (Contact*)malloc(num_contact*sizeof(Contact));
+  a = (Contact*)malloc(num_contact*sizeof(Contact));
+
   fseek(fp1,0,SEEK_SET);
   readFile(fp1,person,num_contact);
+  fseek(fp1,0,SEEK_SET);
+  readFile(fp1, a, num_contact);
   fclose(fp1);
 
-  
-  Node_tr *root = buildBST(person,num_contact);
-  inorder(root);
 
+  // Node_tr *root = buildBST(person,num_contact);
+  // inorder(root);
+  quickSort(0,num_contact-1);
+  print(a,num_contact);
+/*
   char email[MAX];
   int choice;
   while (1){
@@ -144,6 +162,6 @@ int main() {
       case 0: return 0;
     }
   }
-
+*/
   return 0;
 }

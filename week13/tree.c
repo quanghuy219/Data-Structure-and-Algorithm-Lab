@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct node {
   int key;
@@ -41,13 +42,13 @@ Node* create() {
 
 
 void insertNode(int x, Node **root){
-  if (*root == NULL) {
+  if ( (*root) == NULL) {
     (*root) = makeNewNode(x);
   }
 
-  else if( x < (*root)->key) insertNode(x,&(*root) -> left);
+  else if( x < (*root)->key) insertNode(x,  &((*root) -> left));
 
-  else if( x > (*root) -> key) insertNode(x,&(*root)->right);
+  else if( x >= (*root) -> key) insertNode(x,&((*root)->right));
 }
 
 
@@ -97,6 +98,15 @@ void preorder(Node* p){
     printf("%d    ",p->key);
     preorder(p -> left);
     preorder( p-> right);
+  }
+}
+
+
+void inorder(Node *p){
+  if (p != NULL) {
+    inorder(p->left);
+    printf("%d\n",p -> key );
+    inorder(p->right);
   }
 }
 
@@ -168,19 +178,34 @@ void addRightMost(Node *r){
 
 int main() {
   Node* root,*p;
-  root = create();
-  postorder(root);
-  printf("\n");
-  p = search(7,root);
-  if (p == NULL) {
-    printf("Not found!!!\n");
-  }
-  else printf("Found\n");
+  //root = create();
+  //postorder(root);
+
+  //p = search(7,root);
+  // if (p == NULL) {
+  //   printf("Not found!!!\n");
+  // }
+  // else printf("Found\n");
 
   //insertNode(1234,&root);
-  deleteNode(99,&root);
-  postorder(root);
-  printf("\n");
+  // deleteNode(99,&root);
+  // postorder(root);
+  // printf("\n");
+
+  root = (Node*)malloc(sizeof(Node));
+    srand(time(NULL));
+  for (int i = 0; i < 20; i++) {
+    //printf("%d\n",i);
+
+      int a = rand() % 100;
+      //printf("%d\n", a);
+      insertNode(a,&root);
+  }
+
+  inorder(root);
+
+
+
 
 
 
