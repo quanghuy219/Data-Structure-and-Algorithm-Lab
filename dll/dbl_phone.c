@@ -10,7 +10,7 @@
 
 int len;
 
-#include "list.h"
+#include "d_list.h"
 
 
 void correct(char *s)
@@ -23,20 +23,17 @@ void correct(char *s)
 
 PHONE readData(){
   PHONE new;
-  //while(getchar() != '\n');
+  while(getchar() != '\n');
 
-  while(strlen(new.model) == 0){
     printf("Model: ");
     gets(new.model);
-  }
-  while(strlen(new.memory) == 0){
+
     printf("Memory: ");
     gets(new.memory);
-  }
-  while(strlen(new.screenSize) == 0){
+
     printf("Screen size: ");
     gets(new.screenSize);
-  }
+
 
   printf("Price: ");
   scanf("%d",&new.price);
@@ -68,14 +65,13 @@ void buildList(db_list *list){
   while (fread(&ph,sizeof(PHONE),1,fin) == 1) {
     insertAfterCur(list,ph);
   }
-  printf("len = %d\n",len);
    printf("Build list succesfullly\n\n");
   fclose(fin);
 }
 
 
 
-void Search_Update(){
+void Search_Update(db_list *list){
   char search[MAX_STRING_MODEL];
   char model[MAX_STRING_MODEL];
   int i,j, flag = 0;
@@ -97,7 +93,7 @@ void Search_Update(){
   }
   search[i+1] = '\0';
 
-  for (p = root; p != NULL; p=p->next) {
+  for (p = list -> root; p != NULL; p=p->next) {
     model[0] = '\0';
     for (j = 0; j <= strlen(p->Phone.model); j++) {
       model[j] = tolower(p -> Phone.model[j]);
@@ -114,7 +110,7 @@ void Search_Update(){
     printf("No result found!!!\n\n");
   }
   if(flag == 1){
-    printf("Do you want to update?");
+    printf("Do you want to update?\n");
     printf("1. Yes\n");
     printf("0. No\n");
     scanf("%d",&choice);
@@ -131,7 +127,7 @@ void insertAtMiddle(db_list *list){
   new  = readData();
   printf("Position: ");
   scanf("%d",&pos);
-  if(pos > len) insertAfterLast(list,new);
+  if(pos > len) insertAtLast(list,new);
   else if (pos <= 0) insertAtHead(list,new);
   else {
     moveCur(list,pos);
@@ -140,39 +136,34 @@ void insertAtMiddle(db_list *list){
 }
 
 
+void splitList(db_list *list,db_list *list1, db_list *list2, int start, int end){
 
-
-void splitList(Node* r, Node** r1, Node** r2, int start, int num){
+  Node *p;
+  for(p = list -> root; p != NULL; p = p -> next){
+    insertAtLast(list1,p -> Phone);
+  }
+  printf("List1:\n");
+  traverseForward(list1);
+  len = count(list);
   if (start <= 1) {
     start = 1;
-    cur = r;
   }
 
-  else if (start >= len) {
-    start = len;
-    cur = tail;
+  if(end >= len) end = len;
+
+  if(start > end) {
+    printf("Invalid input\n");
+    return;
   }
 
-  if (num >= 0){
-
+  moveCur(list1,start);
+  printf("len = %d\n",len );
+  printf("start = %d. end = %d\n",start,end);
+  for (int i = start; i <= end; i++) {
+    printf("i = %d\n",i);
+    insertAtLast(list2,deleteCurrent(list1));
   }
 }
-
-
-void Divide(){
-  int start;
-  int num;
-  Node* r1,r2;
-  printf("Initial position: ");
-  scanf("%d",&start);
-  printf("Enter num > 0 to split forwark\n num < 0 to split backward\n");
-  printf("Enter number of nodes: ");
-  scanf("%d",&num);
-
-}
-
-
-
 
 
 int main()
@@ -181,10 +172,15 @@ int main()
   len = 0;
   PHONE new;
   db_list list;
+  db_list list1, list2;
   Initialize(&list);
+  Initialize(&list1);
+  Initialize(&list2);
   int choice;
   while (1)
     {
+      len = count(&list);
+      printf("len = %d\n",len);
       printf(" 1. Build list from file dat\n");
       printf(" 2. Traverse forward\n");
       printf(" 3. Traverse backward\n");
@@ -198,6 +194,7 @@ int main()
       printf(" 11. Divide and Extract\n");
       printf(" 12. Reverse List\n");
       printf(" 13. Save to file\n");
+      printf(" 14. Free list\n");
       printf(" 0. Quit\n");
       printf("Your choice: ");
       scanf("%d",&choice);
@@ -218,13 +215,14 @@ int main()
 	  break;
 	case 5:
     new = readData();
-	  insertAfterLast(&list ,new);
+	  insertAtLast(&list ,new);
 	  break;
   case 6:
     insertAtMiddle(&list);
     break;
   case 7:
-    deleteHead(&list);
+    new = deleteHead(&list);
+    printf("%-30s%-10s%-10s%d\n",new.model,new.memory,new.screenSize,new.price);
     break;
   case 8:
     deleteTail(&list);
@@ -236,10 +234,24 @@ int main()
     deleteCurrent(&list);
     break;
 	case 10:
-	  Search_Update();
+	  Search_Update(&list);
 	  break;
+  case 11:
+    printf("Enter start and end: ");
+    int start,end;
+    scanf("%d %d", &start, &end);
+    splitList(&list,&list1,&list2,start,end);
+    printf("List 1\n\n\n");
+    traverseForward(&list1);
+    printf("List2\n\n\n");
+    traverseForward(&list2);
+    break;
   case 12:
     Reverse(&list);
+    break;
+
+  case 14:
+    freeList(&list);
     break;
 
 	case 0: printf("Exit!!!\n"); return 0;
