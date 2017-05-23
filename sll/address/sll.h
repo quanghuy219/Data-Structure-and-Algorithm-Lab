@@ -1,7 +1,7 @@
 
 
 typedef struct list_el {
-  elementType addr;
+  elementType data;
   struct list_el *next;
 } Node;
 
@@ -21,9 +21,9 @@ void Initialize(s_list *list){
 
 
 
-Node* makeNewNode(elementType addr){
+Node* makeNewNode(elementType data){
   Node* new = (Node*)malloc(sizeof(Node));
-  new -> addr = addr;
+  new -> data = data;
   new -> next = NULL;
   return new;
 }

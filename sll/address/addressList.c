@@ -47,12 +47,13 @@ void menu1(s_list *list){
 }
 
 
-void countTotal(s_list *list){
+int countTotal(s_list *list){
   Node *p;
-  total = 0;
+  int tmp = 0;
   for( p = list -> root; p != NULL; p = p->next){
-    if(p != NULL) total ++;
+    if(p != NULL) tmp++;
   }
+  return tmp;
 }
 
 
@@ -76,7 +77,7 @@ elementType readNode(){
 
 void displayNode(Node *p){
   if(p != NULL)
-  printf("%-20s%-20s%s\n",p -> addr.name,p -> addr.email,p->addr.tel);
+  printf("%-20s%-20s%s\n",p -> data.name,p -> data.email,p->data.tel);
 }
 
 
@@ -110,7 +111,7 @@ int main()
   elementType new;
   while (1)
     {
-      countTotal(&list);
+      total = countTotal(&list);
       printf("total = %d\n", total);
       printf(" 1. Build list\n");
       printf(" 2. read node\n");
@@ -169,7 +170,7 @@ int main()
 	  moveCur(n,&list);
 	  break;
 	case 10:
-	  printf("Cur: %-20s%-20s%s\n", list.cur -> addr.name, list.cur->addr.email , list.cur -> addr.tel);
+	  printf("Cur: %-20s%-20s%s\n", list.cur -> data.name, list.cur->data.email , list.cur -> data.tel);
 	  break;
 	case 11:
 	  printf("nth element: ");
