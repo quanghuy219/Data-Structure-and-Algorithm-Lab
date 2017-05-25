@@ -192,31 +192,23 @@ void addRightMost(Node *r){
 
 int main() {
   Node *root,*p;
-  int x;
-  int a[] = {50,70,40,20,30,10,80,60};
+
   root = (Node*)malloc(sizeof(Node));
   root = NULL;
     srand(time(NULL));
-  for (int i = 0; i < 8; i++) {
-      //int a = rand() % 100;
-      //printf("%d\n",a);
-      root = insertNode(a[i],root);
+  for (int i = 0; i < 5; i++) {
+      int a = rand() % 100;
+      printf("%d\n",a);
+      root = insertNode(a,root);
   }
   printf("\n\n\n");
   inorder(root);
   printf("\n\n\n");
-  while(1){
-    printf("Enter a node to delete: ");
-    scanf("%d",&x);
-    root = deleteNode(x,root);
-    inorder(root);
-    printf("\n\n\n");
-  }
-  //root = insertNode(15,root);
-  //inorder(root);
+  root = insertNode(15,root);
+  inorder(root);
 
-  //root = deleteNode(15,root);
-  //printf("\n\n\n");
-  //inorder(root);
+  root = deleteNode(15,root);
+  printf("\n\n\n");
+  inorder(root);
   return 0;
 }

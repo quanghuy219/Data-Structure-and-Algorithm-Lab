@@ -1,6 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define MAX 100
+
+typedef struct {
+  char name[MAX];
+  char email[MAX];
+  char phone[MAX];
+} Contact;
+
+typedef Contact eletype;
+
 #include "tree.h"
 
 #define COUNT 10
@@ -29,28 +40,14 @@ void sort(Contact *person,int num){
 
 
 
-// Node_tr *buildBST(Contact *person, int l, int r){
-//
-//   if (l > r) {
-//     return NULL;
-//   }
-//
-//   int mid = (l+r)/2;
-//   Node_tr* root = makeNewNode(person[mid]);
-//   root -> left = buildBST(person,l,mid-1);
-//   root -> right = buildBST(person,mid+1,r);
-//
-//   return root;
-// }
-
 Node_tr *buildBST(Contact *person, int num){
-  Node_tr *r;
+  Node_tr *root = NULL;
 
   for (int i = 0; i < num; i++) {
-    insertNode(person[i],&r);
+    root = insertNode(person[i],root);
   }
 
-  return r;
+  return root;
 }
 
 
