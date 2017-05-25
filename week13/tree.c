@@ -4,8 +4,8 @@
 
 typedef struct node {
   int key;
-  struct node* left; //leftChild
-  struct node* right; //rightSibling
+  struct node* left; 
+  struct node* right; 
 } Node;
 
 Node* makeNewNode(int i){
@@ -16,43 +16,22 @@ Node* makeNewNode(int i){
   return p;
 }
 
-Node* create() {
-  Node* p;
-  int x;
-  printf("Enter data: ");
-  scanf("%d",&x);
 
-  if (x == -1) {
-    return NULL;
+Node* insertNode(int x, Node *root){
+  if ( root == NULL) {
+    root = makeNewNode(x);
+    return root;
   }
 
-  //if(tmp != -1){
-  p = makeNewNode(x);
-  printf("Enter left child of %d\n",x);
-  //scanf("%d",&x);
-  p -> left = create();
+  else if( x < root->key) root -> left = insertNode(x,  root -> left);
 
-  printf("Enter right sibling of %d\n",x);
-  //scanf("%d",&x);
-  p -> right = create();
+  else if( x > root -> key) root -> right = insertNode(x, root -> right);
 
-
-  return p;
+  return root;
 }
 
 
-void insertNode(int x, Node **root){
-  if ( (*root) == NULL) {
-    (*root) = makeNewNode(x);
-  }
-
-  else if( x < (*root)->key) insertNode(x,  &((*root) -> left));
-
-  else if( x >= (*root) -> key) insertNode(x,&((*root)->right));
-}
-
-
-Node* search(int x, Node* root){
+Node* Search(int x, Node* root){
   if (root == NULL) {
     return NULL;
   }
@@ -60,11 +39,22 @@ Node* search(int x, Node* root){
   else if (root -> key == x) {
     return root;
   }
-  else if(root -> key > x) {
-    return search(x,root->left);
+  else if(x < root -> key) {
+    return Search(x,root->left);
   }
-  else return search(x,root->right);
+  else return Search(x,root->right);
 }
+
+Node* findLeftMost(Node *root){
+  if (root -> left == NULL) return NULL;
+  else return findLeftMost(root -> left);
+}
+
+Node* findRightMost(Node *root) {
+  if (root -> right == NULL) return NULL;
+  else return findRightMost(root -> right);
+}
+
 
 
 int deleteMin(Node **root){
@@ -79,17 +69,33 @@ int deleteMin(Node **root){
 
 
 
-void deleteNode(int k, Node** root) {
-  if (*root != NULL) {
-    if (k < (*root)->key) deleteNode(k,&(*root)->left);
+Node* deleteNode(int k, Node* root) {
+  Node *temp;
 
-    else if ((*root)->left == NULL && (*root)->right == NULL) *root = NULL;
+  if (root == NULL) return root;
 
-    else if ((*root)->left == NULL) *root = (*root)->right;
-    else if ((*root)->right == NULL) *root = (*root)->left;
-    else (*root) -> key = deleteMin(&(*root)->right);
+  if (k < root -> key) root -> left = deleteNode(k, root->left);
 
+  else if ( k > root -> key) root -> right = deleteNode(k, root -> right);
+
+  else {
+    if (root -> left == NULL){
+      temp = root -> right;
+      free(root);
+      return temp;
+    }
+
+    else if (root -> right == NULL) {
+      temp = root -> left;
+      free(root);
+      return temp; 
+    }
+
+    temp = findLeftMost(root -> right);
+    root -> key = temp -> key;
+    root -> right = deleteNode(temp -> key, root -> right);
   }
+  return root;
 }
 
 
@@ -104,8 +110,15 @@ void preorder(Node* p){
 
 void inorder(Node *p){
   if (p != NULL) {
+    
     inorder(p->left);
+    if(p->left != NULL)
+    printf("left of %d : %d\n",p->key, p -> left -> key);
+
     printf("%d\n",p -> key );
+    
+    if(p->right!=NULL)
+    printf("right of %d : %d\n",p->key, p -> right -> key);
     inorder(p->right);
   }
 }
@@ -133,6 +146,7 @@ Node* find(Node *r, int v){
   }
   return NULL;
 }
+
 
 int count(Node *r){
   int c;
@@ -177,57 +191,24 @@ void addRightMost(Node *r){
 
 
 int main() {
-  Node* root,*p;
-  //root = create();
-  //postorder(root);
-
-  //p = search(7,root);
-  // if (p == NULL) {
-  //   printf("Not found!!!\n");
-  // }
-  // else printf("Found\n");
-
-  //insertNode(1234,&root);
-  // deleteNode(99,&root);
-  // postorder(root);
-  // printf("\n");
+  Node *root,*p;
 
   root = (Node*)malloc(sizeof(Node));
+  root = NULL;
     srand(time(NULL));
-  for (int i = 0; i < 20; i++) {
-    //printf("%d\n",i);
-
+  for (int i = 0; i < 5; i++) {
       int a = rand() % 100;
-      //printf("%d\n", a);
-      insertNode(a,&root);
+      printf("%d\n",a);
+      root = insertNode(a,root);
   }
-
+  printf("\n\n\n");
+  inorder(root);
+  printf("\n\n\n");
+  root = insertNode(15,root);
   inorder(root);
 
-
-
-
-
-
-
-  // printf("\nPreorder Transersal\n");
-  // preorder(root);
-  // printf("\n");
-  //
-  // int i;
-  // printf("Find : ");
-  // scanf("%d",&i);
-  // if ( find(root,i) != NULL) {
-  //   printf("Found\n");
-  // }
-  // else printf("Not found\n");
-  //
-  // printf("Number of nodes: %d\n",count(root));
-  // printf("Add left most\n");
-  // addLeftMost(root);
-  // printf("\n");
-  // printf("Add right most\n");
-  // addRightMost(root);
-  // printf("\n");
+  root = deleteNode(15,root);
+  printf("\n\n\n");
+  inorder(root);
   return 0;
 }
