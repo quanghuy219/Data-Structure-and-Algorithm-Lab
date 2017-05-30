@@ -112,13 +112,13 @@ void inorder(Node *p){
   if (p != NULL) {
     
     inorder(p->left);
-    if(p->left != NULL)
-    printf("left of %d : %d\n",p->key, p -> left -> key);
+    //if(p->left != NULL)
+    //printf("left of %d : %d\n",p->key, p -> left -> key);
 
     printf("%d\n",p -> key );
     
-    if(p->right!=NULL)
-    printf("right of %d : %d\n",p->key, p -> right -> key);
+    //if(p->right!=NULL)
+    //printf("right of %d : %d\n",p->key, p -> right -> key);
     inorder(p->right);
   }
 }
@@ -198,16 +198,18 @@ int main() {
     srand(time(NULL));
   for (int i = 0; i < 5; i++) {
       int a = rand() % 100;
-      printf("%d\n",a);
+      //printf("%d\n",a);
       root = insertNode(a,root);
   }
   printf("\n\n\n");
   inorder(root);
-  printf("\n\n\n");
-  root = insertNode(15,root);
-  inorder(root);
-
-  root = deleteNode(15,root);
+  int x;
+  while(root != NULL) {
+    printf("Delete: ");
+    scanf("%d",&x);
+    root = deleteNode(x,root);
+    inorder(root);
+  }
   printf("\n\n\n");
   inorder(root);
   return 0;
