@@ -29,24 +29,15 @@ int main()
 		printf("%s\n",name[i] );
 	}
 
-	for (int i = 0; i < num; i++)
-	{
-		for (int j = i+1; j < num; j++)
-		{
-			if (  strcmp( convertName(name[i]), convertName(name[j]) )  > 0  )
-			{
-				char tmp[MAX];
-				strcpy(tmp,name[i]);
-				strcpy(name[i], name[j]);
-				strcpy(name[j],tmp);
-			}
-		}
-	}
+	sortStr(name,num);
 	printf("\n\n\n");
 	for (int i = 0; i < num; ++i)
 	{
 		printf("%s\n",name[i] );
 	}
+
+
+	
 	return 0;
 }
 
